@@ -1,0 +1,94 @@
+﻿{
+	"GameListFixer": {
+		"gamelist_file": "D:\\github\\rickhelper\\files\\roms\\gamelist.xml",
+		"gamelist_file_edited": "D:\\github\\rickhelper\\files\\roms\\gamelist_edited.xml",
+		"delete_cfg_file": true,
+		"image_extension": ".jpg",
+		"max_description_length": 850
+	},
+	"Genres": [
+		{
+			"originals": [
+
+			],
+			"replace_with": "Action"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Action-Adventure"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Adventure"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Beat'em Up"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Fighting"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Platform"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Puzzle"
+		},
+		{
+			"originals": [
+			],
+			"replace_with": "Racing"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Role playing games"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Games"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Shoot'em Up"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Simulation"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Sports"
+		},
+		{
+			"originals": [
+
+			],
+			"replace_with": "Strategy"
+		}
+	]
+}

@@ -1,0 +1,118 @@
+﻿{
+	"GameListFixer": {
+		"gamelist_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists",
+		"gamelist_file_edited": "D:\\github\\rickhelper\\files\\roms\\gamelist_edited.xml",
+		"delete_cfg_file": true,
+		"image_extension": ".jpg",
+		"max_description_length": 741,
+		"verbose": false
+	},
+	"Genres": [
+		{
+			"originals": [
+				"Shooter-Shooter / 1st person",
+				"Shooter",
+				"Shooter-Action-Strategy",
+				"Action",
+				"Action-Compilation",
+				"Shooter-Action",
+				"Action ",
+				"Emulator"
+			],
+			"replace_with": "Action"
+		},
+		{
+			"originals": [
+				"action-adventure",
+				"Action-adventure "
+			],
+			"replace_with": "Action-Adventure"
+		},
+		{
+			"originals": [
+				"Adventure",
+				"Adventure / Point and Click-Adventure"
+			],
+			"replace_with": "Adventure"
+		},
+		{
+			"originals": [
+				"Beat'em Up"
+			],
+			"replace_with": "Beat'em up"
+		},
+		{
+			"originals": [
+				"Fight",
+				"fighting"
+			],
+			"replace_with": "Fighting"
+		},
+		{
+			"originals": [
+				"Platform-Action-Adventure",
+				"platform"
+			],
+			"replace_with": "Platform"
+		},
+		{
+			"originals": [
+				"Strategy-Puzzle-Game",
+				"Action-Puzzle-Game",
+				"Puzzle-Game-Puzzle-Game / Equalize",
+				"Board Game",
+				"puzzle"
+			],
+			"replace_with": "Puzzle"
+		},
+		{
+			"originals": [
+				"Race, Driving",
+				"Sports-Race, Driving"
+			],
+			"replace_with": "Racing"
+		},
+		{
+			"originals": [
+				"Role playing games-Adventure",
+				"Role playing games",
+				"Adventure-Action-Strategy-Role playing games",
+				"Strategy-Role playing games"
+			],
+			"replace_with": "Role Playing Games"
+		},
+		{
+			"originals": [
+				"Shoot'em Up",
+				"Shoot’em Up"
+			],
+			"replace_with": "Shoot'em up"
+		},
+		{
+			"originals": [
+				"Shooter-Action-Simulation",
+				"Pinball"
+			],
+			"replace_with": "Simulation"
+		},
+		{
+			"originals": [
+				"Sports",
+				"Sports / Skiing-Sports",
+				"Sports / Football-Sports",
+				"Sports / Basketball-Sports",
+				"Sports-Sports / Hockey",
+				"Sports / Wrestling-Sports / Fighting-Sports",
+				"Sports / Wrestling-Sports-Fight",
+				"Sports / Wrestling-Sports / Fighting-Sports-Fight"
+			],
+			"replace_with": "Sports"
+		},
+		{
+			"originals": [
+				"Strategy"
+			],
+			"replace_with": "Strategy"
+		}
+	]
+}

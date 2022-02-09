@@ -11,26 +11,25 @@ using System.Xml.Serialization;
 
 namespace rickhelper
 {
-    public class GameListFixer : ITool
+
+    public class GameListFixer : FixerBase
     {
-        private Configuration _config;
         private string _sourceDirectory;
         private bool _verbose = false;
-        public GameListFixer(Configuration configuration)
+        public GameListFixer(Configuration configuration) : base(configuration)
         {
-            _config = configuration;
-            _sourceDirectory = Path.GetDirectoryName(_config.GameListFixer.GamelistXmlDirectory);
+            _sourceDirectory = Path.GetDirectoryName(Config.GameListFixer.GamelistXmlDirectory);
         }
 
         public bool IsAnswerPositive(string res)
         {
             return AreEqual(res, "y") || string.IsNullOrWhiteSpace(res);
         }
-        public void Run()
+        public override void Run()
         {
             Cmd.Write("GameList Fixer");
 
-            _config.GameListFixer.ToConsole();
+            Config.GameListFixer.ToConsole();
             var res = Cmd.Ask("are these options correct (y/n)", ConsoleColor.Cyan);
             if (!IsAnswerPositive(res))
             {
@@ -38,7 +37,7 @@ namespace rickhelper
                 return;
             }
 
-            var gamelistXmlFiles = GetGameListXmlFiles();
+            var gamelistXmlFiles = GetGameListXmlFiles(true);
             if (!gamelistXmlFiles.Any()) return;
 
             var allAtOnce = Cmd.Ask("Do you want to process all at once? (y/n)", ConsoleColor.Cyan);
@@ -59,24 +58,7 @@ namespace rickhelper
             }
         }
 
-        private List<string> GetGameListXmlFiles()
-        {
-            var gamelistXmlDir = _config.GameListFixer.GamelistXmlDirectory;
-            if (!Directory.Exists(gamelistXmlDir))
-            {
-                Cmd.WriteError($"[{gamelistXmlDir}] is no valid directory for gamelist_dir");
-                return new List<string>();
-            }
 
-            var files = Directory.GetFiles(gamelistXmlDir, "gamelist.xml", SearchOption.AllDirectories).ToList();
-
-            Cmd.Write($"found [{files.Count}] gamelist.xml-files.");
-
-            foreach(var file in files)
-                Cmd.Write($"{file}", ConsoleColor.Green);
-
-            return files;
-        }
         private void Start(string gamelistFile)
         {
             Cmd.Spacer();
@@ -91,18 +73,12 @@ namespace rickhelper
                 ElementName = "gameList",
                 IsNullable = true
             };
+
+            var gameList = CreateGameList(gamelistFile);
             
-            
-            var gamelistNodes = ReadGameList(gamelistFile);
-            var gamelistSerializer = new XmlSerializer(typeof(GameList), new XmlRootAttribute { ElementName = "gameList", IsNullable = true });
-            var gameSerializer = new XmlSerializer(typeof(GameList), new XmlRootAttribute { ElementName = "game", IsNullable = true });
-            
-            
-            //StringReader rdr = new StringReader(gameNodes[0].OuterXml);
-            var gameList = (GameList)gamelistSerializer.Deserialize(new StringReader(gamelistNodes.OuterXml));
 
            // Cmd.NextTopic("Deleting *.cfg-file if it exists", ConsoleColor.Green);
-            //if (_config.GameListFixer.DeleteCfgFile) DeleteCfgFile();
+            //if (Config.GameListFixer.DeleteCfgFile) DeleteCfgFile();
 
 
            // foreach (XmlNode gameNode in gameNodes)
@@ -124,16 +100,9 @@ namespace rickhelper
             }
 
             if(_verbose) Cmd.NextTopic("Creating output-file");
-            OutputResult(gameList);
+            OutputResult(gameList, gamelistFile);
         }
 
-       private XmlNode  ReadGameList(string gamelistFile)
-        {
-            var doc = new XmlDocument();
-            doc.Load(gamelistFile);
-
-            return doc.SelectSingleNode("//gameList");
-        }
 
 
         private void AddingVideoTag(Game game)
@@ -144,10 +113,17 @@ namespace rickhelper
                 game.Video = $"./snaps/{image}.mp4";
             }
         }
-        private void OutputResult(GameList gameList)
+        private void OutputResult(GameList gameList, string sourceGameListFile)
         {
+            var sourceDirLength = Config.GameListFixer.GamelistXmlDirectory.Length;
+            var subDir = Path.GetDirectoryName(sourceGameListFile.Substring(sourceDirLength+1));
 
-            var gameListFile = Path.Combine(_config.GameListFixer.GamelistXmlOutDirectory, "gamelist.xml");
+            var outDir = Path.Combine(Config.GameListFixer.GamelistXmlOutDirectory, subDir);
+
+            if (!Directory.Exists(outDir))
+                Directory.CreateDirectory(outDir);
+
+            var gameListFile = Path.Combine(outDir, "gamelist.xml");
             if(_verbose) Cmd.Write($"Creating file [{gameListFile}]");
 
             var emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
@@ -188,7 +164,7 @@ namespace rickhelper
             var desc = game.Description ?? "";
             desc = Regex.Replace(desc, @"\s+", " ");
 
-            var maxLen = _config.GameListFixer.MaxDescriptionLength > 0 ? _config.GameListFixer.MaxDescriptionLength : 850;
+            var maxLen = Config.GameListFixer.MaxDescriptionLength > 0 ? Config.GameListFixer.MaxDescriptionLength : 850;
             if(desc.Length > maxLen)
             {
                 var trimmed = desc.Substring(0, maxLen);
@@ -201,7 +177,12 @@ namespace rickhelper
 
         private void FixGenre(Game game)
         {
-            var genres = _config.Genres;
+            if (Config.GameListFixer.IgnoreGames.Any(g => string.Equals(g, game.Name)))
+            {
+                Cmd.Write($"Ignoring game [{game.Name}]..", ConsoleColor.Yellow);
+                return;
+            }
+            var genres = Config.Genres;
             if(genres.Any(g => string.Equals(g.ReplaceWith, game.Genre)))
             {
                 if(_verbose) Cmd.Write($"Genre [{game.Genre}] is already valid.", ConsoleColor.Cyan);
@@ -246,7 +227,7 @@ namespace rickhelper
                     var newGenre = dic[res].Trim();
                     if (!string.IsNullOrWhiteSpace(game.Genre))
                     {
-                        var genre = _config.Genres.First(g => AreEqual(g.ReplaceWith, newGenre));
+                        var genre = Config.Genres.First(g => AreEqual(g.ReplaceWith, newGenre));
                         if (!genre.Originals.Any(g => AreEqual(g, game.Genre))) genre.Originals.Add(game.Genre);
                     }
                     game.Genre = newGenre;
@@ -264,7 +245,7 @@ namespace rickhelper
 
         private void FixImageExtension(Game game)
         {
-            var newExtension = _config.GameListFixer.ImageExtension.Trim();
+            var newExtension = Config.GameListFixer.ImageExtension.Trim();
             if (!newExtension.StartsWith(".")) newExtension = $".{newExtension}";
             if (string.IsNullOrWhiteSpace(game.Image)) return;
 

@@ -13,27 +13,33 @@ namespace rickhelper
         public void Run()
         {
             var config = GetConfiguration();
-            while (true)
-            {
-                var options = new List<Option> {
-                    new Option { Number = 1, Text = "Fix Gamelist.xml", Tool = new GameListFixer(config) }
-                };
+            Cmd.Write("Running GameListFixer...");
+            new GameListFixer(config).Run();
 
-                Cmd.WriteOptions(options);
-                var number = "1";
-                if(options.Count > 1)
-                    number = Cmd.Ask("your choice: ");
-                
-                
-                var option = options.FirstOrDefault(o => o.Number.ToString() == number.Trim());
-                if (option == null)
-                {
-                    Cmd.Write($"{number} is invalid.");
-                    continue;
-                }
-                option.Tool.Run();
-                break;
-            }
+            Cmd.Write("Running CollectionFixer...");
+            new CollectionFixer(config).Run();
+
+            //while (true)
+            //{
+            //    var options = new List<Option> {
+            //        new Option { Number = 1, Text = "Fix Gamelist.xml", Tool = new GameListFixer(config) }
+            //    };
+
+            //    Cmd.WriteOptions(options);
+            //    var number = "1";
+            //    if(options.Count > 1)
+            //        number = Cmd.Ask("your choice: ");
+
+
+            //    var option = options.FirstOrDefault(o => o.Number.ToString() == number.Trim());
+            //    if (option == null)
+            //    {
+            //        Cmd.Write($"{number} is invalid.");
+            //        continue;
+            //    }
+            //    option.Tool.Run();
+            //    break;
+            //}
 
             UpdateConfiguration(config);
         }

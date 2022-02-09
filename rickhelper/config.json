@@ -4,10 +4,10 @@
 		"gamelist_out_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists_out",
 		"image_extension": ".jpg",
 		"max_description_length": 741,
+		"ignore_games": [ "kodi", "Kodi Media Player", "Steam Link" ],
 		"verbose": false
 	},
 	"CollectionFixer": {
-		"collection_dir": "D:\\github\\rickhelper\\files\\roms\\collections",
 		"collection_out_dir": "D:\\github\\rickhelper\\files\\roms\\collections_out",
 		"verbose": false
 	},
@@ -23,41 +23,47 @@
 				"Action ",
 				"Emulator"
 			],
-			"replace_with": "Action"
+			"replace_with": "Action",
+			"cfg_file_name": "custom-action.cfg"
 		},
 		{
 			"originals": [
 				"action-adventure",
 				"Action-adventure "
 			],
-			"replace_with": "Action-Adventure"
+			"replace_with": "Action-Adventure",
+			"cfg_file_name": "custom-action-adventure.cfg"
 		},
 		{
 			"originals": [
 				"Adventure",
 				"Adventure / Point and Click-Adventure"
 			],
-			"replace_with": "Adventure"
+			"replace_with": "Adventure",
+			"cfg_file_name": "custom-adventure.cfg"
 		},
 		{
 			"originals": [
 				"Beat'em Up"
 			],
-			"replace_with": "Beat'em up"
+			"replace_with": "Beat'em up",
+			"cfg_file_name": "custom-btmups.cfg"
 		},
 		{
 			"originals": [
 				"Fight",
 				"fighting"
 			],
-			"replace_with": "Fighting"
+			"replace_with": "Fighting",
+			"cfg_file_name": "custom-fighting.cfg"
 		},
 		{
 			"originals": [
 				"Platform-Action-Adventure",
 				"platform"
 			],
-			"replace_with": "Platform"
+			"replace_with": "Platform",
+			"cfg_file_name": "custom-platform.cfg"
 		},
 		{
 			"originals": [
@@ -67,14 +73,16 @@
 				"Board Game",
 				"puzzle"
 			],
-			"replace_with": "Puzzle"
+			"replace_with": "Puzzle",
+			"cfg_file_name": "custom-puzzle.cfg"
 		},
 		{
 			"originals": [
 				"Race, Driving",
 				"Sports-Race, Driving"
 			],
-			"replace_with": "Racing"
+			"replace_with": "Racing",
+			"cfg_file_name": "custom-racing.cfg"
 		},
 		{
 			"originals": [
@@ -83,21 +91,24 @@
 				"Adventure-Action-Strategy-Role playing games",
 				"Strategy-Role playing games"
 			],
-			"replace_with": "Role Playing Games"
+			"replace_with": "Role Playing Games",
+			"cfg_file_name": "custom-rpgs.cfg"
 		},
 		{
 			"originals": [
 				"Shoot'em Up",
 				"Shoot’em Up"
 			],
-			"replace_with": "Shoot'em up"
+			"replace_with": "Shoot'em up",
+			"cfg_file_name": "custom-shmups.cfg"
 		},
 		{
 			"originals": [
 				"Shooter-Action-Simulation",
 				"Pinball"
 			],
-			"replace_with": "Simulation"
+			"replace_with": "Simulation",
+			"cfg_file_name": "custom-simulation.cfg"
 		},
 		{
 			"originals": [
@@ -110,13 +121,15 @@
 				"Sports / Wrestling-Sports-Fight",
 				"Sports / Wrestling-Sports / Fighting-Sports-Fight"
 			],
-			"replace_with": "Sports"
+			"replace_with": "Sports",
+			"cfg_file_name": "custom-sports.cfg"
 		},
 		{
 			"originals": [
 				"Strategy"
 			],
-			"replace_with": "Strategy"
+			"replace_with": "Strategy",
+			"cfg_file_name": "custom-strategy.cfg"
 		}
 	]
 }

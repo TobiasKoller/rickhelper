@@ -146,7 +146,9 @@ namespace rickhelper
         }
         private void OutputResult(GameList gameList)
         {
-            if(_verbose) Cmd.Write($"Creating file [{_config.GameListFixer.GamelistXmlFileEdited}]");
+
+            var gameListFile = Path.Combine(_config.GameListFixer.GamelistXmlOutDirectory, "gamelist.xml");
+            if(_verbose) Cmd.Write($"Creating file [{gameListFile}]");
 
             var emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
             //var serializer = new XmlSerializer(typeof(GameList));
@@ -165,7 +167,7 @@ namespace rickhelper
                 serializer.Serialize(writer, gameList, emptyNamespaces);
 
                 var result = $"<?xml version=\"1.0\"?>{Environment.NewLine}{stream}";
-                File.WriteAllText(_config.GameListFixer.GamelistXmlFileEdited, result);
+                File.WriteAllText(gameListFile, result);
             }
          
 

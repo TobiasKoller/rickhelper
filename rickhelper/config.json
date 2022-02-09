@@ -1,10 +1,14 @@
 ﻿{
 	"GameListFixer": {
 		"gamelist_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists",
-		"gamelist_file_edited": "D:\\github\\rickhelper\\files\\roms\\gamelist_edited.xml",
-		"delete_cfg_file": true,
+		"gamelist_out_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists_out",
 		"image_extension": ".jpg",
 		"max_description_length": 741,
+		"verbose": false
+	},
+	"CollectionFixer": {
+		"collection_dir": "D:\\github\\rickhelper\\files\\roms\\collections",
+		"collection_out_dir": "D:\\github\\rickhelper\\files\\roms\\collections_out",
 		"verbose": false
 	},
 	"Genres": [

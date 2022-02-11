@@ -30,11 +30,12 @@ namespace rickhelper
                 games.Add(system, CreateGameList(gamelistFile).Games);
             }
 
-            var genreGameList = new List<string>();
+            
             Cmd.Write("creating cfg-files...");
 
             foreach (var genre in Config.Genres)
             {
+                var genreGameList = new List<string>();
                 var cfgFile = Path.Combine(outDir, genre.CfgFileName);
                 foreach (var entry in games)
                 {
@@ -51,7 +52,7 @@ namespace rickhelper
                 genreGameList.Sort();
 
                 if (Config.CollectionFixer.Verbose) Cmd.Write($"Creating file {cfgFile}");
-                File.WriteAllText(cfgFile, string.Join(Environment.NewLine,genreGameList));
+                File.WriteAllText(cfgFile, string.Join("\n",genreGameList));
             }
         }
 

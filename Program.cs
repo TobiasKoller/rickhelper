@@ -6,10 +6,22 @@ namespace rickhelper
     {
         static void Main(string[] args)
         {
-            new Helper().Run();
-            Cmd.Spacer();
-            Cmd.Write("Done.");
-            Console.Read();
+            try
+            {
+                new Helper().Run(args);
+                Cmd.Spacer();
+                Cmd.Write("Done.");                
+            }
+            catch (Exception exception)
+            {
+                Cmd.WriteError(exception.Message);
+                Cmd.WriteError(exception.StackTrace);
+
+            }
+            finally
+            {
+                Console.Read();
+            }
         }
     }
 }

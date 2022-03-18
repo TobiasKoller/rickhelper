@@ -28,7 +28,6 @@ namespace rickhelper
         public override void Run()
         {
             Cmd.Write("GameList Fixer");
-
             Config.GameListFixer.ToConsole();
             var res = Cmd.Ask("are these options correct (y/n)", ConsoleColor.Cyan);
             if (!IsAnswerPositive(res))
@@ -92,7 +91,10 @@ namespace rickhelper
                 if(_verbose) Cmd.NextTopic("Fixing genre");
                 FixGenre(game);
 
-                if(_verbose) Cmd.NextTopic("Fixing image");
+                if (_verbose) Cmd.NextTopic("Fixing name");
+                FixName(game);
+
+                if (_verbose) Cmd.NextTopic("Fixing image");
                 FixImageExtension(game);
 
                 if(_verbose) Cmd.NextTopic("Adding video-tag");
@@ -159,6 +161,16 @@ namespace rickhelper
             }
             return max;
         }
+        
+        private void FixName(Game game)
+        {
+            var name = game.Name?.Trim() ?? "";
+            name = new Regex(@"\s+").Replace(name, " "); //remove multi spaces
+            name = new Regex(@"\s+-\s*").Replace(name,": ",1); //replace first - with : and remove leading and trailing spaces
+
+            game.Name = name;
+        }
+
         private void FixDescription(Game game)
         {
             var desc = game.Description ?? "";
@@ -183,6 +195,7 @@ namespace rickhelper
                 return;
             }
             var genres = Config.Genres;
+            
             if(genres.Any(g => string.Equals(g.ReplaceWith, game.Genre)))
             {
                 if(_verbose) Cmd.Write($"Genre [{game.Genre}] is already valid.", ConsoleColor.Cyan);

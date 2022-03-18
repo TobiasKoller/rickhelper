@@ -8,6 +8,7 @@ namespace rickhelper
     {
         public GameListFixerConfig GameListFixer { get; set; }
         public CollectionFixerConfig CollectionFixer { get; set; }
+        public GameListExtractorConfig GameListExtractor { get; set; }
         public List<Genre> Genres { get; set; }
 
     }
@@ -72,6 +73,20 @@ namespace rickhelper
             Cmd.Write("image_extension=" + ImageExtension, color);
             Cmd.Write("verbose=" + Verbose, color);
             Cmd.Spacer();
+        }
+    }
+
+    public class GameListExtractorConfig : IConfig
+    {
+        [JsonProperty("xlsx_in_file")]
+        public string XlsxInFile { get; set; }
+        [JsonProperty("xlsx_out_file")]
+        public string XlsxOutFile { get; set; }
+        [JsonProperty("diff_background_color")]
+        public string DiffBackgroundColor { get; set; }
+        public void ToConsole()
+        {
+
         }
     }
 }

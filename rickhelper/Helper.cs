@@ -10,14 +10,28 @@ namespace rickhelper
     {
         private Dictionary<int, ITool> _helper = new Dictionary<int, ITool>();
         private string _configFile = Path.Combine(Directory.GetCurrentDirectory(),"config.json");
-        public void Run()
+        public void Run(string[] arguments)
         {
             var config = GetConfiguration();
-            Cmd.Write("Running GameListFixer...");
-            new GameListFixer(config).Run();
 
-            Cmd.Write("Running CollectionFixer...");
-            new CollectionFixer(config).Run();
+
+            if (arguments.Length == 1 && arguments[0] == "gamelist_extract")
+            {
+                new GameListExtractor(config).Run();
+                return;
+            }
+            else
+            {
+                Cmd.Write("Running GameListFixer...");
+                new GameListFixer(config).Run();
+
+                Cmd.Write("Running CollectionFixer...");
+                new CollectionFixer(config).Run();
+            }
+
+            
+
+
 
             //while (true)
             //{

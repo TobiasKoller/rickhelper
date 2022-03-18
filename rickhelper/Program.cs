@@ -8,9 +8,15 @@ namespace rickhelper
         {
             try
             {
-                new Helper().Run();
+                new Helper().Run(args);
                 Cmd.Spacer();
                 Cmd.Write("Done.");                
+            }
+            catch (Exception exception)
+            {
+                Cmd.WriteError(exception.Message);
+                Cmd.WriteError(exception.StackTrace);
+
             }
             finally
             {

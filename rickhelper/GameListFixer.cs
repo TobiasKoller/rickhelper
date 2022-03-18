@@ -28,7 +28,6 @@ namespace rickhelper
         public override void Run()
         {
             Cmd.Write("GameList Fixer");
-
             Config.GameListFixer.ToConsole();
             var res = Cmd.Ask("are these options correct (y/n)", ConsoleColor.Cyan);
             if (!IsAnswerPositive(res))

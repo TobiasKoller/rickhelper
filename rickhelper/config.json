@@ -1,6 +1,6 @@
 ﻿{
 	"GameListFixer": {
-		"gamelist_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists",
+		"gamelist_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists\\latest",
 		"gamelist_out_dir": "D:\\github\\rickhelper\\files\\roms\\gamelists_out",
 		"image_extension": ".jpg",
 		"max_description_length": 741,
@@ -10,6 +10,11 @@
 	"CollectionFixer": {
 		"collection_out_dir": "D:\\github\\rickhelper\\files\\roms\\collections_out",
 		"verbose": false
+	},
+	"GameListExtractor": {
+		"xlsx_in_file": "D:\\github\\rickhelper\\files\\roms\\gamelistextract\\gamelist_ultimate_default.xlsx",
+		"xlsx_out_file": "D:\\github\\rickhelper\\files\\roms\\gamelistextract\\out.xlsx",
+		"diff_background_color": "F0A500"
 	},
 	"Genres": [
 		{

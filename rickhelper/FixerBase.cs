@@ -52,10 +52,18 @@ namespace rickhelper
 
         private XmlNode ReadGameList(string gamelistFile)
         {
-            var doc = new XmlDocument();
-            doc.Load(gamelistFile);
+            try
+            {
+                var doc = new XmlDocument();
+                doc.Load(gamelistFile);
 
-            return doc.SelectSingleNode("//gameList");
+                return doc.SelectSingleNode("//gameList");
+            }
+            catch(Exception ex)
+            {
+                Cmd.WriteError("File: " + gamelistFile);
+                throw;
+            }
         }
 
     }

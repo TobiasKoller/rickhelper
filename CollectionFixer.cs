@@ -27,7 +27,7 @@ namespace rickhelper
             foreach(var gamelistFile in files)
             {
                 var system = Directory.GetParent(gamelistFile).Name;
-                games.Add(system, CreateGameList(gamelistFile).Games);
+                games.Add(system, CreateGameList(gamelistFile, false).Games);
             }
 
             

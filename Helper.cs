@@ -20,6 +20,18 @@ namespace rickhelper
                 new GameListExtractor(config).Run();
                 return;
             }
+            else if (arguments.Length == 1 && arguments[0] == "validate")
+            {
+                new Validator(config).Run();
+            }
+            else if (arguments.Length == 1 && arguments[0] == "create_update")
+            {
+               // new UpdateCreator(config).Run();
+            }
+            else if (arguments.Length == 1 && arguments[0] == "generate_image_hashes")
+            {
+                new ImageHashGenerator(config).Run();
+            }
             else
             {
                 Cmd.Write("Running GameListFixer...");

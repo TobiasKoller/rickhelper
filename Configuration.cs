@@ -9,6 +9,7 @@ namespace rickhelper
         public GameListFixerConfig GameListFixer { get; set; }
         public CollectionFixerConfig CollectionFixer { get; set; }
         public GameListExtractorConfig GameListExtractor { get; set; }
+        public UpdateCreatorConfig UpdateCreator { get; set; }
         public List<Genre> Genres { get; set; }
 
     }
@@ -89,4 +90,21 @@ namespace rickhelper
 
         }
     }
+
+    public class UpdateCreatorConfig : IConfig
+    {
+        [JsonProperty("paths")]
+        public List<string> Paths { get; set; }
+        [JsonProperty("output_dir")]
+        public string OutputDirectory { get; set; }
+
+        public void ToConsole()
+        {
+            var color = ConsoleColor.Yellow;
+            Cmd.Write("Options:");
+            Cmd.Write("path:", color);
+            Cmd.Write(string.Join("\r\n-", Paths),color);
+        }
+    }
+
 }

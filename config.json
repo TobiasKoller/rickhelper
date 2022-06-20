@@ -16,6 +16,14 @@
 		"xlsx_out_file": "D:\\github\\rickhelper\\files\\roms\\gamelistextract\\out.xlsx",
 		"diff_background_color": "F0A500"
 	},
+	"UpdateCreator": {
+		"paths": [
+			"opt/retropie/configs",
+			"etc/emulationstation/themes",
+			"home/pi/RetroPie/roms"
+		],
+		"output_dir": "D:\\retropie\\update_tmp_directory"
+	},
 	"Genres": [
 		{
 			"originals": [

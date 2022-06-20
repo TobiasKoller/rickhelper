@@ -15,9 +15,15 @@ namespace rickhelper
             }
         }
 
-        public static void Write(string message, ConsoleColor color = ConsoleColor.White)
+        public static void Write(string message, ConsoleColor color = ConsoleColor.White, bool useSameLine=false)
         {
             Console.ForegroundColor = color;
+            if (useSameLine)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop);
+            }
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }

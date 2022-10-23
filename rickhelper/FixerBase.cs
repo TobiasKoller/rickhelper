@@ -16,7 +16,7 @@ namespace rickhelper
         }
         public abstract void Run();
 
-        protected GameList CreateGameList(string gamelistFile)
+        protected GameList CreateGameList(string gamelistFile, bool removeDuplicates)
         {
             var gamelistNodes = ReadGameList(gamelistFile);
             var gamelistSerializer = new XmlSerializer(typeof(GameList), new XmlRootAttribute { ElementName = "gameList", IsNullable = true });
@@ -24,20 +24,74 @@ namespace rickhelper
 
 
             //StringReader rdr = new StringReader(gameNodes[0].OuterXml);
-            return (GameList)gamelistSerializer.Deserialize(new StringReader(gamelistNodes.OuterXml));
+            var gamelist = (GameList)gamelistSerializer.Deserialize(new StringReader(gamelistNodes.OuterXml));
+
+            return removeDuplicates ? RemoveDuplicates(gamelist) : gamelist;
         }
 
-        protected List<string> GetGameListXmlFiles(bool outputResult)
+        protected bool IsAnswerPositive(string res)
         {
-            var gamelistXmlDir = Config.GameListFixer.GamelistXmlDirectory;
-            if (!Directory.Exists(gamelistXmlDir))
+            return AreEqual(res, "y") || string.IsNullOrWhiteSpace(res);
+        }
+
+        protected bool AreEqual(string string1, string string2)
+        {
+            return string.Equals(string1, string2, StringComparison.OrdinalIgnoreCase);
+        }
+        private GameList RemoveDuplicates(GameList gamelist)
+        {
+            if (gamelist.Provider == null) return gamelist;
+
+            var processedFiles = new List<string>();
+
+            var games = new List<Game>();
+            foreach(var game in gamelist.Games)
             {
-                Cmd.WriteError($"[{gamelistXmlDir}] is no valid directory for gamelist_dir");
-                return new List<string>();
+                if (processedFiles.Contains(game.Path?.ToLower()))
+                {
+                    Cmd.WriteError($"duplicate removed: system={gamelist.Provider.System}; game={game.Name}; {game.Path}");
+                    continue;
+                }
+                processedFiles.Add(game.Path.ToLower());
+                games.Add(game);
             }
 
-            var files = Directory.GetFiles(gamelistXmlDir, "gamelist.xml", SearchOption.AllDirectories).ToList();
+            gamelist.Games = games;
+            return gamelist;
+        }
+        protected List<string> GetGameListXmlFiles(bool outputResult, List<DirectoryInfo> directories=null)
+        {
+            var gamelistXmlDir = "";
+            var files = new List<string>();
 
+            if (directories == null)
+            {
+                gamelistXmlDir = Config.GameListFixer.GamelistXmlDirectory;
+                if (!Directory.Exists(gamelistXmlDir))
+                {
+                    Cmd.WriteError($"[{gamelistXmlDir}] is no valid directory for gamelist_dir");
+                    return new List<string>();
+                }
+
+                files = Directory.GetFiles(gamelistXmlDir, "gamelist.xml", SearchOption.AllDirectories).ToList();
+            }
+            else
+            {
+                foreach(var dir in directories)
+                {
+                    try
+                    {
+                        var gamelistFiles = Directory.GetFiles(dir.FullName, "gamelist.xml");
+                        foreach (var file in gamelistFiles)
+                        {
+                            if (files.Contains(file)) continue;
+                            files.Add(file);
+                        }
+                    }
+                    catch(Exception) { }
+                    
+                }
+            }
             Cmd.Write($"found [{files.Count}] gamelist.xml-files.");
 
             if (outputResult)

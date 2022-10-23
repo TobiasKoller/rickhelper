@@ -1,7 +1,8 @@
 {
   "profiles": {
     "rickhelper": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "create_update"
     }
   }
 }

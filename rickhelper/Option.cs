@@ -4,6 +4,6 @@
     {
         public int Number { get; set; }
         public string Text { get; set; }
-        public ITool Tool { get; set; }
+        public TaskType TaskType { get; set; }
     }
 }

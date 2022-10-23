@@ -21,10 +21,7 @@ namespace rickhelper
             _sourceDirectory = Path.GetDirectoryName(Config.GameListFixer.GamelistXmlDirectory);
         }
 
-        public bool IsAnswerPositive(string res)
-        {
-            return AreEqual(res, "y") || string.IsNullOrWhiteSpace(res);
-        }
+        
         public override void Run()
         {
             Cmd.Write("GameList Fixer");
@@ -35,6 +32,9 @@ namespace rickhelper
                 Cmd.Write("Aborted. Please modify config.json to your needs.", ConsoleColor.Red);
                 return;
             }
+
+            var checkFileExists = Cmd.Ask("check if files exists on \\\\retropie\\roms? (could be very slow) (y/n)").ToUpper()=="Y";
+
 
             var gamelistXmlFiles = GetGameListXmlFiles(true);
             if (!gamelistXmlFiles.Any()) return;
@@ -53,12 +53,12 @@ namespace rickhelper
                     var counter = i + 1;
                     Cmd.Write($"({counter}/{gamelistXmlFiles.Count}) {gamelistXml}");
                 }
-                Start(gamelistXml);
+                Start(gamelistXml, checkFileExists);
             }
         }
 
 
-        private void Start(string gamelistFile)
+        private void Start(string gamelistFile, bool checkFileExists)
         {
             Cmd.Spacer();
             if (!File.Exists(gamelistFile))
@@ -73,12 +73,16 @@ namespace rickhelper
                 IsNullable = true
             };
 
-            var gameList = CreateGameList(gamelistFile);
-            
+            var gameList = CreateGameList(gamelistFile, true);
 
+            Cmd.Write("Next system: " + gameList?.Provider?.System, ConsoleColor.Yellow);
            // Cmd.NextTopic("Deleting *.cfg-file if it exists", ConsoleColor.Green);
             //if (Config.GameListFixer.DeleteCfgFile) DeleteCfgFile();
-
+            if(!Directory.Exists("\\\\retropie"))
+            {
+                Cmd.WriteError("couldnt open directory \\\\retropie");
+                checkFileExists = false;
+            }
 
            // foreach (XmlNode gameNode in gameNodes)
             foreach(var game in gameList.Games)
@@ -91,6 +95,9 @@ namespace rickhelper
                 if(_verbose) Cmd.NextTopic("Fixing genre");
                 FixGenre(game);
 
+                if (_verbose) Cmd.NextTopic("Fixing players");
+                FixPlayers(game);
+
                 if (_verbose) Cmd.NextTopic("Fixing name");
                 FixName(game);
 
@@ -99,12 +106,20 @@ namespace rickhelper
 
                 if(_verbose) Cmd.NextTopic("Adding video-tag");
                 AddingVideoTag(game);
+
+                if(checkFileExists)
+                {
+                    var romName = game.Path.Replace("./", "");
+                    var absolutePath = @$"\\retropie\roms\{gameList.Provider.System}\{romName}";
+                    if (_verbose) Cmd.NextTopic("Checking if file exists on pi");
+                    if (!File.Exists(absolutePath)) Cmd.WriteError($"File [{absolutePath}] not found.");
+                }
+                
             }
 
             if(_verbose) Cmd.NextTopic("Creating output-file");
             OutputResult(gameList, gamelistFile);
         }
-
 
 
         private void AddingVideoTag(Game game)
@@ -187,6 +202,27 @@ namespace rickhelper
             game.Description = desc.Trim();
         }
 
+        private void FixPlayers(Game game)
+        {
+            if (!string.IsNullOrWhiteSpace(game.Players)) return;
+
+            Cmd.NextTopic($"Game: {game.Name}", ConsoleColor.Green);
+            while(true)
+            {
+                var players = Cmd.Ask("Number of players: ");
+                var regex = new Regex(@"^\d(-\d)?$");
+                if (regex.IsMatch(players))
+                {
+                    game.Players = players;
+                    break;
+                }
+
+                Cmd.WriteError("Invalid input. Type a single number or something like [1-4]");
+            }
+            
+
+        }
+
         private void FixGenre(Game game)
         {
             if (Config.GameListFixer.IgnoreGames.Any(g => string.Equals(g, game.Name)))
@@ -251,10 +287,7 @@ namespace rickhelper
             if(_verbose) Cmd.Write($"Updated Genre: [{game.Genre}]", ConsoleColor.Cyan);
         }
 
-        private bool AreEqual(string string1, string string2)
-        {
-            return string.Equals(string1, string2, StringComparison.OrdinalIgnoreCase);
-        }
+        
 
         private void FixImageExtension(Game game)
         {

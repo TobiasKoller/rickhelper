@@ -2,20 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace rickhelper
+namespace RickImageUpdater
 {
     public static class Cmd
     {
 
-        public static void WriteOptions(List<Option> options)
-        {
-            foreach(var option in options.OrderBy(o => o.Number))
-            {
-                Console.WriteLine($"[{option.Number}]\t{option.Text}");
-            }
-        }
-
-        public static void Write(string message, ConsoleColor color = ConsoleColor.White, bool useSameLine=false)
+        public static void Write(string message, ConsoleColor color = ConsoleColor.White, bool useSameLine = false)
         {
             Console.ForegroundColor = color;
             if (useSameLine)
@@ -35,7 +27,14 @@ namespace rickhelper
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static string Ask(string question, ConsoleColor color=ConsoleColor.White)
+        public static bool AskBool(string question, ConsoleColor color = ConsoleColor.White)
+        {
+            var res = Ask(question, color);
+            return string.Equals(res, "y", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(res);
+        }
+
+
+        public static string Ask(string question, ConsoleColor color = ConsoleColor.White)
         {
             Write(question, color);
             return Console.ReadLine();

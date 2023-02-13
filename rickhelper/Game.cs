@@ -41,6 +41,8 @@ namespace rickhelper
 
         [XmlElement("video")]
         public string Video { get; set; }
+        [XmlElement("origin")]
+        public string Origin { get; set; }
         
         public Game()
         {

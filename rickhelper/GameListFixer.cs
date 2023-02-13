@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace rickhelper
 {
@@ -21,11 +22,40 @@ namespace rickhelper
             _sourceDirectory = Path.GetDirectoryName(Config.GameListFixer.GamelistXmlDirectory);
         }
 
+        private string GetOrigin()
+        {
+            string origin = "";
+            var color = ConsoleColor.Yellow;
+
+            var options = new Dictionary<int, string>
+            {
+                {1,"Insanium" },
+                {2, "R.P.E" }
+            };
+
+            int answer;
+            while(true)
+            {
+                Cmd.Spacer();
+                foreach(var option in options) Cmd.Write($"[{option.Key}] {option.Value}", color);
+                
+
+                if (!int.TryParse(Cmd.Ask("your choice: "), out answer) || !options.ContainsKey(answer))
+                {
+                    Cmd.WriteError("Invalid answer.");
+                    continue;
+                }
+                return options[answer];
+            }
+        }
         
         public override void Run()
         {
             Cmd.Write("GameList Fixer");
+            var origin = GetOrigin();
+            
             Config.GameListFixer.ToConsole();
+
             var res = Cmd.Ask("are these options correct (y/n)", ConsoleColor.Cyan);
             if (!IsAnswerPositive(res))
             {
@@ -53,12 +83,12 @@ namespace rickhelper
                     var counter = i + 1;
                     Cmd.Write($"({counter}/{gamelistXmlFiles.Count}) {gamelistXml}");
                 }
-                Start(gamelistXml, checkFileExists);
+                Start(gamelistXml, checkFileExists, origin);
             }
         }
 
 
-        private void Start(string gamelistFile, bool checkFileExists)
+        private void Start(string gamelistFile, bool checkFileExists, string origin)
         {
             Cmd.Spacer();
             if (!File.Exists(gamelistFile))
@@ -91,6 +121,8 @@ namespace rickhelper
                 if(_verbose) Cmd.NextTopic($"Next Game: {game.Name}", ConsoleColor.Green);
                 if(_verbose) Cmd.NextTopic("fixing description format");
                 FixDescription(game);
+
+                game.Origin = origin;
 
                 if(_verbose) Cmd.NextTopic("Fixing genre");
                 FixGenre(game);
@@ -182,7 +214,7 @@ namespace rickhelper
             var name = game.Name?.Trim() ?? "";
             name = new Regex(@"\s+").Replace(name, " "); //remove multi spaces
             name = new Regex(@"\s+-\s*").Replace(name,": ",1); //replace first - with : and remove leading and trailing spaces
-
+            name = name.Replace(" :", ":");
             game.Name = name;
         }
 

@@ -510,11 +510,11 @@
       "replace_with": "Strategy",
       "cfg_file_name": "custom-strategy.cfg"
     },
-	{
-	  "originals": [],
-	  "replace_with": "Shoot'em up/Vertical",
-	  "cfg_file_name": "custom-shmupsvert"
-	}
+    {
+      "originals": [],
+      "replace_with": "Shoot'em up/Vertical",
+      "cfg_file_name": "custom-shmups.cfg"
+    }
   ],
   "HashGenerator": null
 }

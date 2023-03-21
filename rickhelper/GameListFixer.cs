@@ -30,7 +30,7 @@ namespace rickhelper
             var options = new Dictionary<int, string>
             {
                 {1,"Insanium" },
-                {2, "R.P.E" }
+                {2, "R.P.E." }
             };
 
             int answer;

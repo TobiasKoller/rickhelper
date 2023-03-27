@@ -22,37 +22,37 @@ namespace rickhelper
             _sourceDirectory = Path.GetDirectoryName(Config.GameListFixer.GamelistXmlDirectory);
         }
 
-        private string GetOrigin()
-        {
-            string origin = "";
-            var color = ConsoleColor.Yellow;
+        //private string GetOrigin()
+        //{
+        //    string origin = "";
+        //    var color = ConsoleColor.Yellow;
 
-            var options = new Dictionary<int, string>
-            {
-                {1,"Insanium" },
-                {2, "R.P.E." }
-            };
+        //    var options = new Dictionary<int, string>
+        //    {
+        //        {1,"Insanium" },
+        //        {2, "R.P.E." }
+        //    };
 
-            int answer;
-            while(true)
-            {
-                Cmd.Spacer();
-                foreach(var option in options) Cmd.Write($"[{option.Key}] {option.Value}", color);
+        //    int answer;
+        //    while(true)
+        //    {
+        //        Cmd.Spacer();
+        //        foreach(var option in options) Cmd.Write($"[{option.Key}] {option.Value}", color);
                 
 
-                if (!int.TryParse(Cmd.Ask("your choice: "), out answer) || !options.ContainsKey(answer))
-                {
-                    Cmd.WriteError("Invalid answer.");
-                    continue;
-                }
-                return options[answer];
-            }
-        }
+        //        if (!int.TryParse(Cmd.Ask("your choice: "), out answer) || !options.ContainsKey(answer))
+        //        {
+        //            Cmd.WriteError("Invalid answer.");
+        //            continue;
+        //        }
+        //        return options[answer];
+        //    }
+        //}
         
         public override void Run()
         {
             Cmd.Write("GameList Fixer");
-            var origin = GetOrigin();
+            //var origin = GetOrigin();
             
             Config.GameListFixer.ToConsole();
 
@@ -83,12 +83,12 @@ namespace rickhelper
                     var counter = i + 1;
                     Cmd.Write($"({counter}/{gamelistXmlFiles.Count}) {gamelistXml}");
                 }
-                Start(gamelistXml, checkFileExists, origin);
+                Start(gamelistXml, checkFileExists);
             }
         }
 
 
-        private void Start(string gamelistFile, bool checkFileExists, string origin)
+        private void Start(string gamelistFile, bool checkFileExists)
         {
             Cmd.Spacer();
             if (!File.Exists(gamelistFile))
@@ -122,7 +122,7 @@ namespace rickhelper
                 if(_verbose) Cmd.NextTopic("fixing description format");
                 FixDescription(game);
 
-                game.Origin = origin;
+                //game.Origin = origin;
 
                 if(_verbose) Cmd.NextTopic("Fixing genre");
                 FixGenre(game);

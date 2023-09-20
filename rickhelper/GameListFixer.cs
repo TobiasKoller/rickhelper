@@ -236,23 +236,25 @@ namespace rickhelper
 
         private void FixPlayers(Game game)
         {
-            if (!string.IsNullOrWhiteSpace(game.Players)) return;
 
-            Cmd.NextTopic($"Game: {game.Name}", ConsoleColor.Green);
-            while(true)
+            if (string.IsNullOrWhiteSpace(game.Players))
             {
-                var players = Cmd.Ask("Number of players: ");
-                var regex = new Regex(@"^\d(-\d)?$");
-                if (regex.IsMatch(players))
+                Cmd.NextTopic($"Game: {game.Name}", ConsoleColor.Green);
+                while (true)
                 {
-                    game.Players = players;
-                    break;
+                    var players = Cmd.Ask("Number of players: ");
+                    var regex = new Regex(@"^\d(-\d)?$");
+                    if (regex.IsMatch(players))
+                    {
+                        game.Players = players;
+                        break;
+                    }
+
+                    Cmd.WriteError("Invalid input. Type a single number or something like [1-4]");
                 }
-
-                Cmd.WriteError("Invalid input. Type a single number or something like [1-4]");
             }
-            
-
+            if(game.Players?.Trim().Length==1)
+                game.Players = string.Format("{0}-{0}", game.Players);
         }
 
         private void FixGenre(Game game)

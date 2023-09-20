@@ -1,7 +1,7 @@
 {
   "GameListFixer": {
-    "gamelist_dir": "D:\\Retro\\rickhelper\\gamelists_in",
-    "gamelist_out_dir": "D:\\Retro\\rickhelper\\gamelists_out",
+    "gamelist_dir": "C:\\LaufwerkD\\Retro\\rickhelper\\gamelists_in",
+    "gamelist_out_dir": "C:\\LaufwerkD\\Retro\\rickhelper\\gamelists_out",
     "image_extension": ".jpg",
     "max_description_length": 741,
     "ignore_games": [
@@ -12,12 +12,12 @@
     "verbose": false
   },
   "CollectionFixer": {
-    "collection_out_dir": "D:\\Retro\\rickhelper\\collections_out",
+    "collection_out_dir": "C:\\LaufwerkD\\Retro\\rickhelper\\collections_out",
     "verbose": false
   },
   "GameListExtractor": {
-    "xlsx_in_file": "D:\\Retro\\rickhelper\\gamelistextract\\gamelist_ultimate_orig.xlsx",
-    "xlsx_out_file": "D:\\Retro\\rickhelper\\gamelistextract\\gamelist_upgrade.xlsx",
+    "xlsx_in_file": "C:\\LaufwerkD\\Retro\\rickhelper\\gamelistextract\\gamelist_ultimate_orig.xlsx",
+    "xlsx_out_file": "C:\\LaufwerkD\\Retro\\rickhelper\\gamelistextract\\gamelist_upgrade.xlsx",
     "diff_background_color": "F0A500"
   },
   "UpdateCreator": null,
